@@ -202,8 +202,6 @@ describe('groupArgs', () =>
 
     test('14. short value option -x=v is preserved as one token', () =>
     {
-      // For short options the tokenizer treats everything after the option letter
-      // as the attached value, so `-n=v` comes through intact.
       const result = groupArgs(
         ['pos', '-n=v'],
         { binding: 'following', options: sampleOptions },
@@ -211,22 +209,28 @@ describe('groupArgs', () =>
       expect(result.groups).toEqual([{ positional: 'pos', options: ['-n=v'] }]);
     });
 
-    test('short value option with attached value -nv is preserved', () =>
+    test('short value option -x= (empty inline) is accepted as one token', () =>
     {
       const result = groupArgs(
-        ['pos', '-n3'],
+        ['pos', '-n='],
         { binding: 'following', options: sampleOptions },
       );
-      expect(result.groups).toEqual([{ positional: 'pos', options: ['-n3'] }]);
+      expect(result.groups).toEqual([{ positional: 'pos', options: ['-n='] }]);
     });
 
-    test('short value option with attached path-like value', () =>
+    test('attached-without-equals short value (e.g. -n3) throws (per SPEC)', () =>
     {
-      const result = groupArgs(
-        ['pos', '-I/usr/include'],
-        { binding: 'following', options: sampleOptions },
+      // SPEC lists only `-x`, `-x VALUE`, `-x=VALUE`. Bare attached suffixes
+      // are ambiguous with bundling and rejected.
+      expect(() => groupArgs(['pos', '-n3'], { binding: 'following', options: sampleOptions }))
+        .toThrow('[@axhxrx/args] -n requires a value via');
+    });
+
+    test('attached-without-equals path-like short value throws (e.g. -I/usr/include)', () =>
+    {
+      expect(() => groupArgs(['pos', '-I/usr/include'], { binding: 'following', options: sampleOptions })).toThrow(
+        '[@axhxrx/args] -I requires a value via',
       );
-      expect(result.groups).toEqual([{ positional: 'pos', options: ['-I/usr/include'] }]);
     });
 
     test('15. aliases: an option with multiple long names is recognized under each', () =>
@@ -252,15 +256,35 @@ describe('groupArgs', () =>
       ]);
     });
 
-    test('value option takes a dash-starting next token as its value', () =>
+    test('an option-shaped next token is NOT consumed as a value; it throws Missing value', () =>
     {
-      const result = groupArgs(
-        ['pos', '--assert', '--not-found'],
-        { binding: 'following', options: sampleOptions },
+      // SPEC: option-shaped next tokens count as "no value available". Callers
+      // who want a literal dash-starting value must use `--assert=--not-found`.
+      expect(() =>
+        groupArgs(
+          ['pos', '--assert', '--not-found'],
+          { binding: 'following', options: sampleOptions },
+        )
+      ).toThrow('[@axhxrx/args] Missing value for --assert');
+    });
+
+    test('an option-shaped next token that is a registered short option also throws', () =>
+    {
+      expect(() =>
+        groupArgs(
+          ['pos', '--assert', '-a'],
+          { binding: 'following', options: sampleOptions },
+        )
+      ).toThrow('[@axhxrx/args] Missing value for --assert');
+    });
+
+    test('a `--` terminator as the next token after a value option throws Missing value', () =>
+    {
+      // `--` is option-shaped per the spec — the tokenizer does not swallow the
+      // terminator as a value.
+      expect(() => groupArgs(['pos', '--assert', '--'], { options: sampleOptions })).toThrow(
+        '[@axhxrx/args] Missing value for --assert',
       );
-      expect(result.groups).toEqual([
-        { positional: 'pos', options: ['--assert', '--not-found'] },
-      ]);
     });
 
     test('value option with inline negative value: --retry=-5', () =>

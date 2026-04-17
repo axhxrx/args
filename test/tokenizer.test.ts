@@ -44,15 +44,24 @@ describe('tokenize edge cases', () =>
     ]);
   });
 
-  test('value option consumes a dash-starting next token as its value', () =>
+  test('value option with an option-shaped next token throws Missing value', () =>
   {
-    // Dash-starting values are legal (negative numbers, option-shaped strings used as values).
+    expect(() =>
+      tokens(
+        ['--assert', '--not-found', 'after'],
+        [{ long: 'assert', requiresValue: true }],
+      )
+    ).toThrow('[@axhxrx/args] Missing value for --assert');
+  });
+
+  test('value option accepts a negative-number next token as its value', () =>
+  {
     const result = tokens(
-      ['--assert', '--not-found', 'after'],
-      [{ long: 'assert', requiresValue: true }],
+      ['--retry', '-5', 'after'],
+      [{ long: 'retry', requiresValue: true }],
     );
     expect(result).toEqual([
-      { kind: 'option', rawTokens: ['--assert', '--not-found'] },
+      { kind: 'option', rawTokens: ['--retry', '-5'] },
       { kind: 'positional', value: 'after' },
     ]);
   });
