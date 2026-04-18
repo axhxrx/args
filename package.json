@@ -21,6 +21,7 @@
     "src",
     "README.md",
     "LICENSE",
+    "GLOSSARY.md",
     "SPEC.md"
   ],
   "scripts": {

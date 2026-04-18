@@ -8,7 +8,7 @@ Turns out, it's apparently because the POSIX terminology is ambiguous bullshit! 
 
 I also don't think I had anything to do with the selection of "folklore" as the label for prevailing-but-not-based-on-much terms. Claudeさん pulled that one out of his own bot ass. But I like it! 👏
 
-So without further ado, or revision, I'll let the automaton make the case. 
+So without further ado, or revision, I'll let the automaton make the case. This does explain the terminology used by this library, but I can't vouch for historical accuracy — I can only say that it passes my own smell test, so I went with it.
 
 ---
 
