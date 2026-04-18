@@ -1,10 +1,32 @@
 {
   "name": "@axhxrx/args",
-  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=24"
+  },
   "devDependencies": {
+    "@std/assert": "npm:@jsr/std__assert",
+    "@std/expect": "npm:@jsr/std__expect",
     "@types/bun": "latest"
   },
   "peerDependencies": {
     "typescript": "^5"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE",
+    "GLOSSARY.md",
+    "SPEC.md"
+  ],
+  "scripts": {
+    "check": "bun tsc --noEmit && deno check && deno lint && dprint check",
+    "fix": "dprint fmt && deno lint --fix",
+    "test": "bun test && deno test && node --test"
   }
 }
