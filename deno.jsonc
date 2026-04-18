@@ -4,7 +4,7 @@
   "exports": "./src/index.ts",
   "license": "MIT",
   "tasks": {
-    "test": "deno test -A",
+    "test": "deno test",
     "check": "deno check src/**/*.ts test/**/*.ts && deno lint && dprint check",
     "fix": "dprint fmt"
   },
