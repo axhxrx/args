@@ -19,7 +19,7 @@ export interface OptionRegistry
   shortOptions: Map<string, OptionBehavior>;
 }
 
-const ERROR_PREFIX = '[@axhxrx/args]';
+export const ERROR_PREFIX = '[@axhxrx/args]';
 
 /**
  Long option names are restricted to the characters that survive a round-trip through the tokenizer.
@@ -112,5 +112,3 @@ export function buildOptionRegistry(definitions: readonly OptionDefinition[]): O
 
   return { longOptions, shortOptions };
 }
-
-export { ERROR_PREFIX };

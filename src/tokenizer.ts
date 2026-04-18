@@ -86,12 +86,7 @@ function parseLongOption(
       return { token: { kind: 'option', rawTokens: [arg] }, consumesNextArg: false };
     }
 
-    if (isOptionShaped(nextArg, shortOptions))
-    {
-      throw new Error(`${ERROR_PREFIX} Missing value for --${name}`);
-    }
-
-    if (nextArg === undefined)
+    if (nextArg === undefined || isOptionShaped(nextArg, shortOptions))
     {
       throw new Error(`${ERROR_PREFIX} Missing value for --${name}`);
     }
@@ -134,12 +129,7 @@ function parseShortOption(
       return { token: { kind: 'option', rawTokens: [arg] }, consumesNextArg: false };
     }
 
-    if (isOptionShaped(nextArg, shortOptions))
-    {
-      throw new Error(`${ERROR_PREFIX} Missing value for -${name}`);
-    }
-
-    if (nextArg === undefined)
+    if (nextArg === undefined || isOptionShaped(nextArg, shortOptions))
     {
       throw new Error(`${ERROR_PREFIX} Missing value for -${name}`);
     }
