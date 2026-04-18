@@ -34,6 +34,9 @@ export function groupArgs(
   options?: GroupArgsOptions,
 ): GroupArgsResult
 
+export function flag(primary: string, ...aliases: string[]): OptionDefinition
+export function valueOption(primary: string, ...aliases: string[]): OptionDefinition
+
 export type Binding = 'preceding' | 'following'
 
 export interface GroupArgsOptions
@@ -61,6 +64,12 @@ export interface ArgGroup
   options: string[]
 }
 ```
+
+### Helpers
+
+`flag(primary, ...aliases)` and `valueOption(primary, ...aliases)` are thin constructors for `OptionDefinition` objects. Names dispatch by length: single-character names register as short options, multi-character names register as long options. `valueOption` sets `requiresValue: true`; `flag` leaves it unset.
+
+The helpers perform no name validation themselves — invalid names surface as the usual registration-time errors when `groupArgs` is called. Callers that want a single-character long option (uncommon) must build the `OptionDefinition` literal by hand.
 
 ### Defaults
 
@@ -254,8 +263,10 @@ These are the implementation-driving tests. Numbering is not sacred but behaviou
 args/
   SPEC.md                    # this document
   README.md                  # user-facing overview + install/usage
+  GLOSSARY.md                # vocabulary (flag / value option / value / positional argument)
   src/
     groupArgs.ts             # main export
+    helpers.ts               # flag() and valueOption() constructors
     tokenizer.ts             # internal: token classification, negative-number heuristic
     validation.ts            # internal: option-definition validation at registration time
     types/
@@ -268,7 +279,9 @@ args/
     index.ts                 # re-exports public surface (runtime + types)
   test/
     groupArgs.test.ts        # primary test file (all behaviour tests)
-    tokenizer.test.ts        # unit tests for edge cases of token classification (optional, fold into primary if small)
+    helpers.test.ts          # flag() / valueOption() behaviour
+    tokenizer.test.ts        # unit tests for edge cases of token classification
+    validation.test.ts       # registration-time validation
   deno.jsonc
   package.json
   tsconfig.json
