@@ -1,8 +1,8 @@
 # `@axhxrx/args`
 
-Positional-anchored CLI argument tokenizer.
+Positional-argument-anchored CLI argument tokenizer.
 
-Standard POSIX argument parsers tend to assume one flat option namespace, plus a sequence of positionals. That doesn't fit CLIs where some options apply to a specific positional:
+Most POSIX argument parsers tend to assume one flat option namespace, plus a sequence of positional argumentss. That doesn't fit CLIs where most options apply to a specific positional argument:
 
 ```sh
 my-tool --verbose \
@@ -10,9 +10,10 @@ my-tool --verbose \
   "task B" --url http://b --retries 3
 ```
 
+
+
 `@axhxrx/args` slices `argv` into positional-anchored groups and leaves semantic interpretation (option value types, validation, mutual exclusion rules) to the caller.
 
-See [SPEC.md](./SPEC.md) for the full specification and [GLOSSARY.md](./GLOSSARY.md) for the vocabulary (**flag**, **value option**, **value**, **positional argument**, **argument terminator**).
 
 ## Install
 
@@ -82,6 +83,8 @@ Deno, Bun, Node 24.2+
 MIT
 
 ## Happenings
+
+- 2026-04-18 🩹 0.1.1 — terminology
 
 - 2026-04-18 📦 0.1.0 — initial release
 
