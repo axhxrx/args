@@ -12,17 +12,19 @@ my-tool --verbose \
 
 `@axhxrx/args` slices `argv` into positional-anchored groups and leaves semantic interpretation (option value types, validation, mutual exclusion rules) to the caller.
 
+See [SPEC.md](./SPEC.md) for the full specification and [GLOSSARY.md](./GLOSSARY.md) for the vocabulary (**flag**, **value option**, **value**, **positional argument**, **argument terminator**).
+
 ## Install
 
-```sh
+```bash
 # Deno
 deno add jsr:@axhxrx/args
 
-# Bun or Node
+# Bun / Node
 bunx jsr add @axhxrx/args
 ```
 
-## Usage
+## Quick start
 
 ```ts
 import { flag, groupArgs, valueOption } from '@axhxrx/args'
@@ -63,20 +65,24 @@ options: [
 - `'following'` (default): options after a positional argument bind to it; options before the first positional argument are globals.
 - `'preceding'`: options before a positional argument bind to it; trailing options after the last positional argument go to `globalOptions`.
 
-### Vocabulary
+## Tests
 
-See [GLOSSARY.md](./GLOSSARY.md) for the library's terminology — **flag**, **value option**, **value**, **positional argument**, **argument terminator** — and how it maps to POSIX and to the modern CLI folklore.
-
-## Development
-
-### Deno
-
-```sh
-bun install
-deno install
-bun test              # run tests with Bun
-deno test -A          # run tests with Deno
-node --test           # run tests with Node 24.2+
-bun tsc --noEmit      # typecheck
-dprint fmt            # format
+```bash
+bun test
+deno test
+node --test
 ```
+
+## Runtimes
+
+Deno, Bun, Node 24.2+
+
+## License
+
+MIT
+
+## Happenings
+
+- 2026-04-18 📦 0.1.0 — initial release
+
+以上
