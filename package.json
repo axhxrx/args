@@ -24,8 +24,8 @@
     "SPEC.md"
   ],
   "scripts": {
-    "check": "bun tsc --noEmit && dprint check",
-    "fix": "dprint fmt",
-    "test": "bun test"
+    "check": "bun tsc --noEmit && deno check && deno lint && dprint check",
+    "fix": "dprint fmt && deno lint --fix",
+    "test": "bun test && deno test && node --test"
   }
 }
